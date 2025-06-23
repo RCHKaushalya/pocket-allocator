@@ -55,6 +55,23 @@ impl Allocator {
 
         std::ptr::null_mut()
     }
+
+    fn free(&mut self, ptr: *mut u8) {
+        let base_ptr =  self.heap.as_mut_ptr();
+
+        for block in self.blocks.iter_mut() {
+            let block_ptr = unsafe {base_ptr.add(block.start)};
+
+            if ptr == block_ptr {
+                block.is_free = true;
+                println!("freed block at offset {}", block.start);
+                return;
+            }
+        }
+
+        println!("Pointer not found. can not free");
+    }
+
 }
 
 fn main() {
@@ -62,6 +79,12 @@ fn main() {
 
     let ptr1 = allocator.allocate(64);
     let ptr2 = allocator.allocate(128);
-    println!("Pointers: {:?} {:?}", ptr1, ptr2);
+
+    println!("Alocate ptr: {:?}", ptr1);
+    println!("Alocate ptr: {:?}", ptr2);
+
+    allocator.free(ptr1);
+
+    let ptr3 = allocator.allocate(32);
+    println!("Alocate ptr: {:?}", ptr3);
 }
-  

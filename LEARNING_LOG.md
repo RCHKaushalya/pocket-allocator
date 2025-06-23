@@ -1,0 +1,1 @@
+I learned how to implement memory deallocation by comparing raw pointers. I now understand how memory blocks can be marked as reusable using flags like is_free. This makes my allocator more efficient and closer to how real allocators work in OS kernels.
