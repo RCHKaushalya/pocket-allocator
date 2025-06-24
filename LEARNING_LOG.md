@@ -45,3 +45,13 @@ Performing allocation without malloc
 Building the very system that higher-level allocators (and programs) depend on.
 
 By learning this in Rust, you’re getting a taste of C-level systems code, but with better compile-time guarantees and safer encapsulation.
+
+Memory Reporting
+> This mimics how real OS tools like top, htop, or even the kernel itself track memory use. I learned how to read my allocator’s internal block list to debug usage and fragmentation. I’m thinking like a system now—inspecting memory layout is key to efficient low-level programming.
+
+> In Rust, new() is a widely-used naming convention for constructor functions, but it's not built into the language. Unlike class-based languages with reserved constructor keywords, Rust lets me define custom constructors in impl blocks using any name. I’ve learned that Foo::new() is idiomatic, but not required.
+
+> In Rust, .iter() gives me read-only access to each item in a collection, while .iter_mut() gives me the ability to mutate them. This ties directly into Rust’s strict borrowing rules—mutability is explicit, so the compiler can prevent data races or unexpected changes in memory.
+
+Simulated Shell Interaction
+> By wrapping allocator logic in a CLI, I now understand how user programs and system allocators interact through syscalls or shell commands. This builds the intuition of creating tools like top, malloc, or even a kernel monitor. I also learned how to capture user input and parse basic arguments in Rust.

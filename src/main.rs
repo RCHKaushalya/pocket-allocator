@@ -1,3 +1,5 @@
+use std::{io:: {self, Write}, usize};
+
 const HEAP_SIZE: usize = 1024;
 
 #[derive(Clone, Copy, Debug)]
@@ -99,14 +101,52 @@ impl Allocator {
 
 fn main() {
     let mut allocator = Allocator::new();
+    let mut ptrs: Vec<*mut u8> = Vec::new();
 
-    let a = allocator.allocate(64);
-    let b = allocator.allocate(128);
-    allocator.status();
+    loop {
+        print!(">");
+        io::stdout().flush().unwrap();
 
-    allocator.free(a);
-    allocator.status();
+        let mut input = String::new();
+        if io::stdin().read_line(&mut input).is_err() {
+            println!("Failed to read input");
+            continue;
+        }
 
-    let c = allocator.allocate(32);
-    allocator.status();
+        let parts: Vec<&str> = input.trim().split_whitespace().collect();
+        if parts.is_empty() {
+            continue;
+        }
+
+        match parts[0] {
+            "alloc" if parts.len() == 2 => {
+                if let Ok(size) = parts[1].parse::<usize>() {
+                    let ptr = allocator.allocate(size);
+                    ptrs.push(ptr);
+                }
+            }
+
+            "free" if parts.len() == 2 => {
+                if let Ok(index) =parts[1].parse::<usize>() {
+                    if index < ptrs.len() {
+                        allocator.free(ptrs[index]);
+                    } else {
+                        println!("Invalid pointer index");
+                    }
+                }
+            }
+
+            "status" => {
+                allocator.status();
+            }
+
+            "exit" => {
+                break;
+            }
+
+            _ => {
+                println!("Commands: alloc <size> | free <index> | status | exit");
+            }
+        }
+    }
 }
