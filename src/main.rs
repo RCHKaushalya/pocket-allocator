@@ -72,19 +72,41 @@ impl Allocator {
         println!("Pointer not found. can not free");
     }
 
+    fn status(&self) {
+        println!("\n📦 Allocator status report:");
+
+        let mut used = 0;
+        let mut free = 0;
+
+        for block in self.blocks.iter() {
+            if block.size == 0 {
+                continue;
+            }
+
+            if block.is_free {
+                println!("🟩 Free block: offset {} size {}", block.start, block.size);
+                free += block.size;
+            } else {
+                println!("🟥 Used block: offset {} size {}", block.start, block.size);
+                used += block.size;
+            }
+        }
+
+        println!("➡️ Total: {} bytes | Used: {} bytes | Free: {} bytes", HEAP_SIZE, used, HEAP_SIZE-used);
+    }
+
 }
 
 fn main() {
     let mut allocator = Allocator::new();
 
-    let ptr1 = allocator.allocate(64);
-    let ptr2 = allocator.allocate(128);
+    let a = allocator.allocate(64);
+    let b = allocator.allocate(128);
+    allocator.status();
 
-    println!("Alocate ptr: {:?}", ptr1);
-    println!("Alocate ptr: {:?}", ptr2);
+    allocator.free(a);
+    allocator.status();
 
-    allocator.free(ptr1);
-
-    let ptr3 = allocator.allocate(32);
-    println!("Alocate ptr: {:?}", ptr3);
+    let c = allocator.allocate(32);
+    allocator.status();
 }
