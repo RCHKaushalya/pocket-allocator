@@ -13,6 +13,19 @@ A minimal heap memory allocator written in Rust, built for learning systems prog
 - Pointer labels like `ptr[0]`, `ptr[1]`
 - `help`: quick reference to commands
 
+## 📚 What I Learned
+This project helped me:
+ - Understand how low-level memory allocators work
+ - Simulate block merging and heap layouts
+ - Build a terminal-based tool with labeled pointer tracking
+ - Visualize memory fragmentation using emojis 😄
+
+## 🔮 Future Ideas
+ - Auto-shrink memory map
+ - Stress test with random allocation patterns
+ - File logging for status snapshots
+ - Convert into a bootable kernel
+
 ---
 
 ## 🚀 Getting Started
@@ -30,23 +43,4 @@ Then enter commands like:
 > status
 > visualize
 > exit
-
-## 📚 What I Learned
-This project helped me:
-
-Understand how low-level memory allocators work
-
-Simulate block merging and heap layouts
-
-Build a terminal-based tool with labeled pointer tracking
-
-Visualize memory fragmentation using emojis 😄
-
-## 🔮 Future Ideas
-Auto-shrink memory map
-
-Stress test with random allocation patterns
-
-File logging for status snapshots
-
-Convert into a bootable kernel
+> help
