@@ -55,3 +55,5 @@ Memory Reporting
 
 Simulated Shell Interaction
 > By wrapping allocator logic in a CLI, I now understand how user programs and system allocators interact through syscalls or shell commands. This builds the intuition of creating tools like top, malloc, or even a kernel monitor. I also learned how to capture user input and parse basic arguments in Rust.
+
+I created a memory visualizer to graphically represent my allocator state. Each block was converted into colored symbols (🟥 for used, 🟩 for free) proportional to its size. This helped me reason about fragmentation, alignment, and block reuse—just like visual tools used in debuggers and memory profilers.

@@ -97,6 +97,24 @@ impl Allocator {
         println!("➡️ Total: {} bytes | Used: {} bytes | Free: {} bytes", HEAP_SIZE, used, HEAP_SIZE-used);
     }
 
+    fn visualize(&self) {
+        println!("\n🧱 Heap Visualization");
+
+        let mut heap_line = String::new();
+
+        for block in self.blocks.iter() {
+            if block.size == 0 {
+                continue;
+            }
+
+            let symbol = if block.is_free { '🟩' } else { '🟥' };
+            for _ in 0..(block.size/8).max(1) {
+                heap_line.push(symbol);
+            }
+        }
+
+        println!("[{}]", heap_line);
+    }
 }
 
 fn main() {
@@ -138,6 +156,10 @@ fn main() {
 
             "status" => {
                 allocator.status();
+            }
+
+            "vis" | "visualize" => {
+                allocator.visualize();
             }
 
             "exit" => {
