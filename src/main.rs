@@ -156,7 +156,9 @@ fn main() {
             "alloc" if parts.len() == 2 => {
                 if let Ok(size) = parts[1].parse::<usize>() {
                     let ptr = allocator.allocate(size);
+                    let index =  ptrs.len();
                     ptrs.push(ptr);
+                    println!("-> Stored as ptr[{}]", index);
                 }
             }
 
