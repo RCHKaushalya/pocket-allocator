@@ -11,14 +11,14 @@ struct Block {
 
 struct Allocator {
     heap: [u8; HEAP_SIZE],
-    blocks: [Block; 32],
+    blocks: Vec<Block>,
 }
 
 impl Allocator {
     fn new() -> Self {
         Self {
             heap: [0; HEAP_SIZE],
-            blocks: [Block { start: 0, size: 0, is_free: true }; 32],
+            blocks: Vec::new(),
         }
     }
 
@@ -30,7 +30,7 @@ impl Allocator {
                 return self.heap.as_mut_ptr().wrapping_add(block.start);
             }
         }
-
+ 
         let mut current_offset = 0;
         for block in self.blocks.iter() {
             if block.size > 0 {
@@ -43,20 +43,17 @@ impl Allocator {
             return std::ptr::null_mut();
         }
 
-        for block in self.blocks.iter_mut() {
-            if block.size == 0 {
-                *block = Block {
-                    start: current_offset,
-                    size,
-                    is_free: false,
-                };
-                println!("New allocation: {} bytes at offset {}", size, current_offset);
-                return self.heap.as_mut_ptr().wrapping_add(current_offset);
-            }
-        }
+        let ptr = self.heap.as_mut_ptr().wrapping_add(current_offset);
+        self.blocks.push(Block {
+            start: current_offset,
+            size,
+            is_free: false,
+        });
 
-        std::ptr::null_mut()
+        println!("New allocation: {} bytes at offset {}", size, current_offset);
+        ptr
     }
+
 
     fn free(&mut self, ptr: *mut u8) {
         let base_ptr =  self.heap.as_mut_ptr();
@@ -67,6 +64,7 @@ impl Allocator {
             if ptr == block_ptr {
                 block.is_free = true;
                 println!("freed block at offset {}", block.start);
+                self.merge_free_blocks();
                 return;
             }
         }
@@ -78,7 +76,7 @@ impl Allocator {
         println!("\n📦 Allocator status report:");
 
         let mut used = 0;
-        let mut free = 0;
+        let mut _free = 0;
 
         for block in self.blocks.iter() {
             if block.size == 0 {
@@ -87,7 +85,7 @@ impl Allocator {
 
             if block.is_free {
                 println!("🟩 Free block: offset {} size {}", block.start, block.size);
-                free += block.size;
+                _free += block.size;
             } else {
                 println!("🟥 Used block: offset {} size {}", block.start, block.size);
                 used += block.size;
@@ -114,6 +112,24 @@ impl Allocator {
         }
 
         println!("[{}]", heap_line);
+    }
+
+    fn merge_free_blocks(&mut self) {
+        let mut i = 0;
+        while i+1 < self.blocks.len() {
+            let current = &self.blocks[i];
+            let next = &self.blocks[i+1];
+
+            if current.is_free && next.is_free && current.start+current.size == next.start {
+                let new_size = current.size+next.size;
+                self.blocks[i].size = new_size;
+
+                self.blocks.remove(i + 1);
+                continue;
+            }
+
+            i += 1;
+        }
     }
 }
 
