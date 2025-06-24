@@ -184,8 +184,18 @@ fn main() {
                 break;
             }
 
+            "help" => {
+                println!("\n📖 Available commands:");
+                println!("  alloc <size>     → Allocate memory (e.g. alloc 64)");
+                println!("  free <index>     → Free pointer by index (e.g. free 0)");
+                println!("  status           → Show allocator status report");
+                println!("  visualize        → Show memory layout as an ASCII bar");
+                println!("  exit             → Exit the allocator CLI");
+                println!("  help             → Show this command guide");
+            }
+
             _ => {
-                println!("Commands: alloc <size> | free <index> | status | exit");
+                println!("Unknown command. Type 'help' for a list of supported commands.");
             }
         }
     }
