@@ -31,7 +31,7 @@ Then enter commands like:
 > visualize
 > exit
 
-📚 What I Learned
+## 📚 What I Learned
 This project helped me:
 
 Understand how low-level memory allocators work
@@ -42,7 +42,7 @@ Build a terminal-based tool with labeled pointer tracking
 
 Visualize memory fragmentation using emojis 😄
 
-🔮 Future Ideas
+## 🔮 Future Ideas
 Auto-shrink memory map
 
 Stress test with random allocation patterns
